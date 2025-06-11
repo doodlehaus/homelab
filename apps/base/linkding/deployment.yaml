@@ -22,6 +22,11 @@ spec:
           ports:
             - containerPort: 9090
           allowPrivilegeEscalation: false
+          envFrom:
+            - secretRef:
+                name: linkding-container-env
+            # - configMapRef:
+            #     name: linkding-configmap
           volumeMounts:
             - name: linkding-data
               mountPath: /etc/linkding/data
