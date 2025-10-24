@@ -1,43 +1,56 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: kube-prometheus-stack
-  namespace: monitoring
+    name: kube-prometheus-stack
+    namespace: monitoring
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: kube-prometheus-stack
-      version: "66.2.2"
-
-      # version: "58.x"
-
-      sourceRef:
-        kind: HelmRepository
-        name: kube-prometheus-stack
-        namespace: monitoring
-      interval: 12h
-  install:
-    crds: Create
-  upgrade:
-    crds: CreateReplace
-  driftDetection:
-    mode: enabled
-    ignore:
-      # Ignore "validated" annotation which is not inserted during install
-      - paths: ["/metadata/annotations/prometheus-operator-validated"]
-        target:
-          kind: PrometheusRule
-  values:
-    grafana:
-      adminPassword: doodlehaus
-
-      ingress:
-        enabled: true
-        ingressClassName: traefik
-        hosts:
-          - grafana.markdavidanderson.com
-        tls:
-          - secretName: grafana-tls-secret
-            hosts:
-              - grafana.markdavidanderson.com
+    interval: 30m
+    chart:
+        spec:
+            chart: kube-prometheus-stack
+            version: 66.2.2
+            # version: "58.x"
+            sourceRef:
+                kind: HelmRepository
+                name: kube-prometheus-stack
+                namespace: monitoring
+            interval: 12h
+    install:
+        crds: Create
+    upgrade:
+        crds: CreateReplace
+    driftDetection:
+        mode: enabled
+        ignore:
+            # Ignore "validated" annotation which is not inserted during install
+            - paths:
+                - /metadata/annotations/prometheus-operator-validated
+              target:
+                kind: PrometheusRule
+    values:
+        grafana:
+            adminPassword: ENC[AES256_GCM,data:iwiuU+O52/4DzgEgiWc=,iv:1/wVs50w9ZX7l73I2rJ7asKFAsf2/R6XdvoEPTXpk2Y=,tag:znU+ZBCYmt6xchBOnNZYWQ==,type:str]
+            ingress:
+                enabled: true
+                ingressClassName: traefik
+                hosts:
+                    - grafana.markdavidanderson.com
+                tls:
+                    - secretName: grafana-tls-secret
+                      hosts:
+                        - grafana.markdavidanderson.com
+sops:
+    age:
+        - recipient: age1rtppp3pcptn4k9376dvwyqls2eayf82m8s80lcsp8n7rs67x84xskxey6r
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwRjhzaE5CdVdoell3clhT
+            UDBxTmlkYm5tenlhNXFNRzhWNzYvYi81N2hnCkltZmJ0bzZBMmVOdm1MTFd2VlBZ
+            Q25pUkdSNDNKazNNVnpDekFaLzVKM3cKLS0tIEh1SkNxMGp5eW9YRmdqaW9IVE1D
+            OVZ4UDVMcHlmMWRPbUFYTmZjU1BCckUK2vinGtoWMNFbOUbsHB/Dfgj8Y/LWWn9S
+            ynwPLaU2uJ0/ePyJ5jlmpoD30xdHHgOW6f8iH3aU+PhTf+9yOe+sJQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-10-24T23:28:44Z"
+    mac: ENC[AES256_GCM,data:mSIUsiNyChvV5WunivV/pkgh/ltAfNrevnYbat516Djjo1F/4evq75pDLuzrIKTQsxp8akRrmzxBjIFXrz2JyGEyihf/XnvRv6udrnvxYsK7SU8PSa+FdM8vnCkPB8n8e3nc4INeMCFEhSWi5bTULLzGFwEEELlM5oNkevMQYQU=,iv:8lK6XKJaI82ip7cxrCj3+h3/xT13n0CXwFaQP8xre78=,tag:aLJ/jnr+xt2A2JdJbDM/cQ==,type:str]
+    encrypted_regex: adminPassword
+    version: 3.10.2
