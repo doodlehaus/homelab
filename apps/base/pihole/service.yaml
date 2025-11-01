@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pihole-dns-tcp
+  name: pihole-dns
 spec:
   selector:
     app: pihole
@@ -25,16 +25,6 @@ spec:
       nodePort: 30053
       protocol: TCP
       name: dns-tcp
-  type: NodePort
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: pihole-dns-udp
-spec:
-  selector:
-    app: pihole
-  ports:
     - port: 53
       targetPort: 53
       nodePort: 30053
