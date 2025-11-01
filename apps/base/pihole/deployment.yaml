@@ -18,7 +18,7 @@ spec:
         - name: pihole
           image: pihole/pihole:2024.07.0
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               name: web
               protocol: TCP
             - containerPort: 53
@@ -41,6 +41,8 @@ spec:
               value: "true"
             - name: DNSMASQ_LISTENING
               value: "all"
+            - name: WEB_PORT
+              value: "8080"
           volumeMounts:
             - name: pihole-config
               mountPath: /etc/pihole
