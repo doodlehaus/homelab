@@ -12,6 +12,8 @@ spec:
       labels:
         app: pihole
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirst
       containers:
         - name: pihole
           image: pihole/pihole:2024.07.0
